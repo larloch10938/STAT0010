@@ -1,0 +1,48 @@
+\section{Introduction}
+\justify
+State space models are dynamic models represented in a well defined state space for easiness of interaction and representation. They have many applications in engineering, economics and other disciplines. 
+\par \vspace{5mm}
+A state space models is defined as:
+\begin{equation} \label{eq:measure}
+    Y_t = \textbf{B}^T \textbf{S}_t + \epsilon_t
+\end{equation}
+\begin{equation} \label{eq:trans}
+    \textbf{S}_t =  \textbf{C}\textbf{S}_{t-1} + \textbf{H}_t
+\end{equation}
+With the covariance matrix of \textbf{H} being \textbf{V}.
+\par \vspace{5mm}
+One of the main assumptions on state space models to make tractability of the model easier is to assume normality of the distribution of the error terms both in the measurement or observation equation (\ref{eq:measure}) and the transition or state equation (\ref{eq:trans}).
+\par \vspace{5mm}
+One of the most useful features of state space models is the Kalman filter (\cite{kalman1960}). While the intuition behind the filter doesn't rely on the normality of the data, the ability to compute multiple steps ahead of the model is grounded on normality to make the necessary simplifications.
+\par \vspace{5mm}
+The Kalman filter is a recursive procedure for calculating the optimal estimator of the state vector $\textbf{S}_t$ given all the information available. The procedure relies on the previously defined variables and on \textbf{P}, the covariance matrix of the associated estimation error:
+\begin{equation}
+    \textbf{P}_{t|t-k} = E((\textbf{S}_t - \widehat{\textbf{S}}_{t|t-k})^T(\textbf{S}_t - \widehat{\textbf{S}}_{t|t-k}))
+\end{equation}
+Having defined those quantities the Kalman filter procedure would consist of the following equations:
+\begin{equation}
+  \label{eq:kalman}
+  \begin{gathered}
+    \widehat{\textbf{S}}_{t|t-1} = \textbf{C}\widehat{\textbf{S}}_{t-1|t-1}\\
+    \textbf{P}_{t|t-1} =  \textbf{C}\textbf{P}_{t-1|t-1}\textbf{C}^T + \textbf{V}\\
+    f_t = \textbf{B}^T\textbf{P}_{t|t-1}\textbf{B} + \sigma^2\\
+    \widehat{\textbf{S}}_{t|t} = \widehat{\textbf{S}}_{t|t-1} + \textbf{P}_{t|t-1}
+    \textbf{B}(Y_t - \textbf{B}^T\widehat{\textbf{S}}_{t|t-1})/f_t\\
+    \textbf{P}_{t|t} =  \textbf{P}_{t|t-1} -  \textbf{P}_{t|t-1}\textbf{B}\textbf{B}^T \textbf{P}_{t|t-1} /f_t
+  \end{gathered}
+\end{equation}
+Where \textbf{C} is the transition matrix between hidden states, $f_t$ is the adjustment factor which is part of the Kalman Gain. $f_t$ might also be interpreted as the the variance of the prediction error $Y_t - \hat{Y_t}$.
+\par \vspace{5mm}
+Generalized State Space Models (GSSM) do not rely on the previous assumptions of normality and are therefore suitable for different types of analysis with non-normally distributed data.
+
+The main difference in GSSM from the previous introduction is in the two equations (\ref{eq:measure}) and (\ref{eq:trans}). In there we need to define the measurement equation:
+\begin{equation} \label{eq:gener_measure}
+    Y_t|\textbf{S}_t \sim f_t(y|\textbf{S}_t) dy 
+\end{equation}
+And the transition equation:
+\begin{equation} \label{eq:gener_trans}
+    \textbf{S}_t|\textbf{S}_{t-1} \sim g_t(\textbf{S}|\textbf{S}_t) d\textbf{S}_t
+\end{equation}
+This generalized state space model will be governed by the conditional densities $f_t$ and $g_t$ defined there. Obviously the generalization of a Kalman filter approach to the GSSM requires a higher degree of complexity and possibly some approximations.
+
+We will now review the literature around the two distributions and how they have been approached and approximated through time.

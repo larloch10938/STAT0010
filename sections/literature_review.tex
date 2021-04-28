@@ -1,0 +1,24 @@
+\section{Literature Review}
+\justify
+Generalized State Space Models are flexible and suitable for a variety of time series data. We can find various examples of applications of such models in literature. We present some of the work on GSSM below, with a focus on the initial generalization of normal approaches and the first applications of them.
+\par \vspace{5mm}
+In (\cite{kitagawa1987}) an approach to generalized state space models is presented and applied to a real data-set. This is the first introduction of a technique implying non normality in the noise processes of the state space. In his paper Kitagawa allows for $\epsilon$ and \textbf{V} to be non normal. Numerous attempts to include non normality in state space models are then covered but only the method proposed in the paper deals with it directly instead of forcing some kind of transformation to the data. The author proposes to estimate an approximation of the density function and uses a spline to approximate it. With a sufficiently small interval the density function can be reasonably estimated and therefore used to update the one step ahead prediction of the model.
+\par \vspace{5mm}
+In (\cite{song2007correlated}) a frequentist approach and a Bayesian approach to GSSM are presented. The model presented in the introduction had no assumptions made while the Kalman filter equations \eqref{eq:kalman} relied on the assumption of normality to update the matrix \textbf{P} of probabilities distribution. In a generalized case this is not possible and in the book the authors propose different approaches as to how to estimates such quantities in the filter. \textbf{P} is therefore defined as:
+\begin{equation}
+    \label{eq:distprob}
+    \textbf{P}_{t|t-1} = \int{\textbf{P}_{t-1|t-1}g_t(\textbf{S}_t|\textbf{S}_{t-1})
+    d\textbf{S}_{t-1}}
+\end{equation}
+where $g_t$ is the distribution probability of the state matrix \textbf{S} conditional on the previous state of the model. This cannot be further simplified since we cannot make assumptions on $g$. From here the authors propose several approaches to the estimation of the integral. The Bayesian approach is making use of the Monte Carlo method which is effectively approximating the probability density of $\textbf{S}_t$ as:
+\begin{equation}
+    \textbf{S}_t = \frac{1}{M}\sum_{i=1}^{M} \textbf{S}_t^{(i)}
+\end{equation}
+Where $\textbf{S}^i$ is the sampled state from the original observed data \textbf{Y}.
+\par \vspace{5mm}
+In (\cite{jorgsong98}) the authors focus on count longitudinal data, using Poisson distributions to approximate the density function of the state space model. The main contribution from the paper is the use of an approximation function instead of a Monte Carlo approach to estimate the distribution $g$. The approximation function is part of the Tweedie class which has the following density form:
+\begin{equation}
+    f(y: \mu, \sigma^2, p) = c_p(y: \sigma^2)e^{\frac{1}{\sigma^2}(y\tau_p^{-1}(\mu) - \kappa{\tau_p^{-1}(\mu)})}
+\end{equation}
+Where $\mu$ is the mean parameter, $\sigma^2$ the dispersion parameter and $p$ the shape parameter.
+Such a distribution allows the Kalman filter equation to be derived analytically as demonstrated in the technical appendix of the paper.
